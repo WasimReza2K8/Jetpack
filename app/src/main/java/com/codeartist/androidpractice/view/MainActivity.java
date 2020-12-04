@@ -40,7 +40,7 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 mProgressBar.setVisibility(View.VISIBLE);
-                mViewModel.getProperties();
+                mViewModel.makeQuery();
             }
         });
         listView.setHasFixedSize(true);

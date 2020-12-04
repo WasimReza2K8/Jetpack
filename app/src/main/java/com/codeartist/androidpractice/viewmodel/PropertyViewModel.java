@@ -18,15 +18,8 @@ public class PropertyViewModel extends ViewModel {
         properties = repository.properties;
     }
 
-    public void getProperties() {
-         makeQuery();
-
-    }
-
     public void makeQuery() {
         repository.getProperties();
-        //Log.i("result", String.valueOf(properties.getValue().size()));
-        //repository.pfpfp
     }
 
     @Override
