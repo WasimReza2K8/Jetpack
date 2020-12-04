@@ -10,6 +10,8 @@ import com.codeartist.androidpractice.model.Employees;
 import com.google.gson.Gson;
 
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 
 public class EmployeeViewModel extends ViewModel {
     public EmployeeViewModel(){
@@ -20,15 +22,27 @@ public class EmployeeViewModel extends ViewModel {
             "{'name':'Shyam', 'email':'shyam23@gmail.com', 'age':28," +
             "'photo':'https://cdn.pixabay.com/photo/2015/03/26/09/47/sky-690293_960_720.jpg'}]";
     ArrayList<Employees> em = new ArrayList();
-    private MutableLiveData<ArrayList<Employees>> _employees = new MutableLiveData<ArrayList<Employees>>(em);
+    private MutableLiveData<ArrayList<Employees>> _employees= new MutableLiveData<ArrayList<Employees>>(em);
+
+   /* public LiveData<ArrayList<Employees>> getEmployees() {
+        if (_employees == null) {
+            _employees = new MutableLiveData<>();
+            onLoad();
+        }
+        return _employees;
+    }*/
+   // private MutableLiveData<ArrayList<Employees>> _employees = new MutableLiveData<ArrayList<Employees>>(em);
     public LiveData<ArrayList<Employees>> employees = _employees;
     public void onLoad(){
         Gson gson = new Gson();
         //Log.e("json", json);
+        //_employees.postValue(new ArrayList<>());
         Employees[] employees = gson.fromJson(json, Employees[].class);
-        for (Employees em:employees) {
+        ArrayList<Employees> list = new ArrayList<Employees> (Arrays.asList(employees));
+        _employees.setValue(list);
+        /*for (Employees em:employees) {
            // Log.e("empl", em.getName());
             _employees.getValue().add(em);
-        }
+        }*/
     }
 }
