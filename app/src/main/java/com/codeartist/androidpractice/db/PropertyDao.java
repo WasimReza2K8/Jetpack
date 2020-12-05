@@ -1,6 +1,7 @@
 package com.codeartist.androidpractice.db;
 
 import androidx.lifecycle.LiveData;
+import androidx.lifecycle.MutableLiveData;
 import androidx.room.Dao;
 import androidx.room.Insert;
 import androidx.room.OnConflictStrategy;
@@ -19,7 +20,7 @@ public interface PropertyDao {
     @Query("DELETE FROM property_table")
     void deleteAll();
 
-    @Query("SELECT * FROM property_table ORDER BY price ASC")
+    @Query("SELECT * FROM property_table")
     LiveData<List<Property>> getProperty();
 }
 

@@ -1,6 +1,7 @@
 package com.codeartist.androidpractice.repository;
 
 import android.app.Application;
+import android.os.Build;
 import android.util.Log;
 
 import androidx.lifecycle.LiveData;
@@ -12,9 +13,10 @@ import com.codeartist.androidpractice.model.Property;
 import com.codeartist.androidpractice.network.NetworkCall;
 
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 
-import io.reactivex.Flowable;
 import io.reactivex.Observer;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.annotations.NonNull;
@@ -24,14 +26,18 @@ import io.reactivex.schedulers.Schedulers;
 
 public class Repository {
     private static Repository instance;
-    public LiveData<List<Property>> properties;
+    public LiveData<List<Property>> dbProperties;
+    public LiveData<List<Property>> finalProperties;
+    private List<Property> prop = new ArrayList<>();
+    private MutableLiveData<List<Property> > _properties = new MutableLiveData<>(prop);
     public CompositeDisposable mCompositeDisposable = new CompositeDisposable();
     private PropertyDao mDao;
 
     private Repository(Application application){
         PropertyRoomDatabase db = PropertyRoomDatabase.getDatabase(application);
         mDao = db.propertyDao();
-        properties = mDao.getProperty();
+        dbProperties = mDao.getProperty();
+        finalProperties = _properties;
     }
     public static Repository getInstance(Application application){
         if(instance == null){
@@ -62,6 +68,9 @@ public class Repository {
                             mDao.insert(properties);
                         });
 
+                        //Log.e("object", String.valueOf(mDao.getProperty().getValue()));
+
+                        _properties.setValue(properties);
 
                     }
 
@@ -75,6 +84,7 @@ public class Repository {
 
                     }
                 });
+
         /*return LiveDataReactiveStreams.fromPublisher(NetworkCall.getInstance().getRequestApi()
                 .makeQuery()
                 .subscribeOn(Schedulers.io())
@@ -82,5 +92,34 @@ public class Repository {
        // Log.i("pppp", properties.getValue().toString());
 
 
+    }
+
+    private void getData(){
+      //  mDao.getProperty().toOberservable
+    }
+
+
+    public void sort() {
+        List<Property> pro = _properties.getValue();
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
+            pro.sort(Comparator.comparing(Property::getPrice));
+        } else{
+            Collections.sort(pro,  (property, t1)-> property.getPrice()- t1.getPrice());
+        }
+        _properties.setValue(pro);
+
+       /* sort();sort();
+        Collections.sort(pro, new Comparator<Property>() {
+            @Override
+            public int compare(Property o1, Property o2) {
+                return o1.getType().compareTo(o2.getType());
+            }
+        });*/
+    }
+
+    public void sortByType(){
+        List<Property> pro = _properties.getValue();
+        Collections.sort(pro, (Property o1, Property o2) -> o1.getType().compareTo(o2.getType()));
+        _properties.setValue(pro);
     }
 }

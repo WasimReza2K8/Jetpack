@@ -3,7 +3,6 @@ package com.codeartist.androidpractice.viewmodel;
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.ViewModel;
 
-import com.codeartist.androidpractice.PropertyApplication;
 import com.codeartist.androidpractice.model.Property;
 import com.codeartist.androidpractice.repository.Repository;
 
@@ -13,13 +12,22 @@ public class PropertyViewModel extends ViewModel {
     private Repository repository;
     public LiveData<List<Property>> properties;
 
-    public PropertyViewModel() {
-        repository = Repository.getInstance(PropertyApplication.getInstance());
-        properties = repository.properties;
+
+    public PropertyViewModel(Repository repository) {
+        this.repository = repository;
+        properties = repository.finalProperties;
     }
 
     public void makeQuery() {
         repository.getProperties();
+    }
+
+    public void sort(){
+        repository.sort();
+    }
+
+    public void sortByType(){
+        repository.sortByType();
     }
 
     @Override
@@ -28,3 +36,4 @@ public class PropertyViewModel extends ViewModel {
         repository.mCompositeDisposable.clear();
     }
 }
+

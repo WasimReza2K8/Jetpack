@@ -2,16 +2,14 @@ package com.codeartist.androidpractice;
 
 import android.app.Application;
 
+import com.codeartist.androidpractice.repository.Repository;
+
 public class PropertyApplication extends Application {
-    private static Application sApp;
+    public Repository repository;
     @Override
     public void onCreate() {
         super.onCreate();
-        sApp = this;
-    }
-    public static Application getInstance(){
-        return sApp;
-
+        repository = Repository.getInstance(this);
     }
 
 }
