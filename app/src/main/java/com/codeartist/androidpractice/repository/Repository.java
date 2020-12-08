@@ -1,11 +1,11 @@
 package com.codeartist.androidpractice.repository;
 
-import android.app.Application;
+import android.content.Context;
 import android.os.Build;
 import android.util.Log;
 
 import androidx.lifecycle.LiveData;
-import androidx.lifecycle.MutableLiveData;
+import androidx.lifecycle.MediatorLiveData;
 
 import com.codeartist.androidpractice.db.PropertyDao;
 import com.codeartist.androidpractice.db.PropertyRoomDatabase;
@@ -27,27 +27,31 @@ import io.reactivex.schedulers.Schedulers;
 public class Repository {
     private static Repository instance;
     public LiveData<List<Property>> dbProperties;
-    public LiveData<List<Property>> finalProperties;
-    private List<Property> prop = new ArrayList<>();
-    private MutableLiveData<List<Property> > _properties = new MutableLiveData<>(prop);
+    public MediatorLiveData<List<Property>> finalProperties = new MediatorLiveData<>();
     public CompositeDisposable mCompositeDisposable = new CompositeDisposable();
     private PropertyDao mDao;
 
-    private Repository(Application application){
+    private Repository(Context application) {
         PropertyRoomDatabase db = PropertyRoomDatabase.getDatabase(application);
         mDao = db.propertyDao();
         dbProperties = mDao.getProperty();
-        finalProperties = _properties;
+        finalProperties.addSource(dbProperties, new androidx.lifecycle.Observer<List<Property>>() {
+            @Override
+            public void onChanged(List<Property> properties) {
+                finalProperties.setValue(properties);
+            }
+        });
     }
-    public static Repository getInstance(Application application){
-        if(instance == null){
+
+    public static Repository getInstance(Context application) {
+        if (instance == null) {
             instance = new Repository(application);
         }
         return instance;
     }
 
 
-    public void getProperties(){
+    public void getProperties() {
         NetworkCall.getInstance().getRequestApi()
                 .makeQuery()
                 .toObservable()
@@ -68,10 +72,6 @@ public class Repository {
                             mDao.insert(properties);
                         });
 
-                        //Log.e("object", String.valueOf(mDao.getProperty().getValue()));
-
-                        _properties.setValue(properties);
-
                     }
 
                     @Override
@@ -84,42 +84,23 @@ public class Repository {
 
                     }
                 });
-
-        /*return LiveDataReactiveStreams.fromPublisher(NetworkCall.getInstance().getRequestApi()
-                .makeQuery()
-                .subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread()));*/
-       // Log.i("pppp", properties.getValue().toString());
-
-
-    }
-
-    private void getData(){
-      //  mDao.getProperty().toOberservable
     }
 
 
     public void sort() {
-        List<Property> pro = _properties.getValue();
+        List<Property> pro = finalProperties.getValue();
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
             pro.sort(Comparator.comparing(Property::getPrice));
-        } else{
-            Collections.sort(pro,  (property, t1)-> property.getPrice()- t1.getPrice());
+        } else {
+            Collections.sort(pro, (property, t1) -> property.getPrice() - t1.getPrice());
         }
-        _properties.setValue(pro);
+        finalProperties.setValue(pro);
 
-       /* sort();sort();
-        Collections.sort(pro, new Comparator<Property>() {
-            @Override
-            public int compare(Property o1, Property o2) {
-                return o1.getType().compareTo(o2.getType());
-            }
-        });*/
     }
 
-    public void sortByType(){
-        List<Property> pro = _properties.getValue();
+    public void sortByType() {
+        List<Property> pro = finalProperties.getValue();
         Collections.sort(pro, (Property o1, Property o2) -> o1.getType().compareTo(o2.getType()));
-        _properties.setValue(pro);
+        finalProperties.setValue(pro);
     }
 }

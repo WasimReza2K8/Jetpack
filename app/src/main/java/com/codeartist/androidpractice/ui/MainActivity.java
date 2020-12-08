@@ -1,4 +1,4 @@
-package com.codeartist.androidpractice.view;
+package com.codeartist.androidpractice.ui;
 
 import android.os.Bundle;
 import android.util.Log;
@@ -12,17 +12,14 @@ import androidx.lifecycle.ViewModelProviders;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.codeartist.androidpractice.PropertyApplication;
 import com.codeartist.androidpractice.R;
 import com.codeartist.androidpractice.adapters.PropertyAdapter;
-import com.codeartist.androidpractice.model.Property;
 import com.codeartist.androidpractice.repository.Repository;
 import com.codeartist.androidpractice.viewmodel.PropertyViewModel;
 import com.codeartist.androidpractice.viewmodel.PropertyViewModelFactory;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 import java.util.ArrayList;
-import java.util.List;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -37,7 +34,7 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         Log.i("MainActivity", "Called ViewModelProvider.get");
-        Repository repository = ((PropertyApplication)this.getApplication()).repository;
+        Repository repository = Repository.getInstance(this.getApplicationContext());
         mViewModel = ViewModelProviders.of(this, new PropertyViewModelFactory(repository)).get(PropertyViewModel.class);
         RecyclerView listView = findViewById(R.id.employees);
         mProgressBar =  findViewById(R.id.progressBar);

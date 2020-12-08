@@ -9,7 +9,7 @@ public class PropertyApplication extends Application {
     @Override
     public void onCreate() {
         super.onCreate();
-        repository = Repository.getInstance(this);
+        //repository = Repository.getInstance(this);
     }
 
 }
