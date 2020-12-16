@@ -1,6 +1,9 @@
 plugins {
     id 'com.android.application'
+    id 'kotlin-android'
+    id 'kotlin-kapt'
 }
+
 
 android {
     compileSdkVersion 29
@@ -13,6 +16,7 @@ android {
         versionName "1.0"
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
+        multiDexEnabled true
     }
 
     buildTypes {
@@ -31,11 +35,14 @@ android {
 }
 
 dependencies {
-    def lifecycle_version = "2.2.0"
-    def retrofitVersion = "2.5.0"
+    def lifecycle_version = '2.2.0'
+    def retrofitVersion = '2.6.0'
     def rxjava_version = '2.2.7'
     def rxandroid_version = '2.1.1'
     def roomVersion = '2.2.5'
+    def multidex_version = '2.0.1'
+    def version_moshi = '1.11.0'
+
 
     // ViewModel
     implementation "androidx.lifecycle:lifecycle-viewmodel:$lifecycle_version"
@@ -52,15 +59,31 @@ dependencies {
     // Retrofit
     implementation "com.squareup.retrofit2:retrofit:$retrofitVersion"
     implementation "com.squareup.retrofit2:converter-gson:$retrofitVersion"
+    implementation "com.squareup.retrofit2:converter-scalars:$retrofitVersion"
+    implementation "com.squareup.retrofit2:converter-moshi:$retrofitVersion"
+    //moshi
+    implementation "com.squareup.moshi:moshi-kotlin:$version_moshi"
     //room components
     implementation "androidx.room:room-runtime:$roomVersion"
     annotationProcessor "androidx.room:room-compiler:$roomVersion"
+    implementation "androidx.room:room-ktx:$roomVersion"
+    kapt "androidx.room:room-compiler:$roomVersion"
+    androidTestImplementation "androidx.room:room-testing:$roomVersion"
 // RxJava
     implementation "io.reactivex.rxjava2:rxjava:$rxjava_version"
 
 // RxAndroid
     implementation "io.reactivex.rxjava2:rxandroid:$rxandroid_version"
     annotationProcessor 'com.github.bumptech.glide:compiler:4.11.0'
+    implementation "androidx.core:core-ktx:+"
+    implementation "androidx.lifecycle:lifecycle-viewmodel-ktx:2.1.0"
+    implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
+
+    //multidex
+    implementation "androidx.multidex:multidex:$multidex_version"
 
 
+}
+repositories {
+    mavenCentral()
 }

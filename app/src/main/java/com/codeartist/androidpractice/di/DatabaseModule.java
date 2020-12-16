@@ -1,3 +1,4 @@
+/*
 package com.codeartist.androidpractice.di;
 
 import android.content.Context;
@@ -31,3 +32,4 @@ public class DatabaseModule {
         return propertyRoomDatabase.propertyDao();
     }
 }
+*/

@@ -1,3 +1,4 @@
+/*
 package com.codeartist.androidpractice.di;
 
 import com.codeartist.androidpractice.db.PropertyDao;
@@ -21,3 +22,4 @@ public class RepositoryModule {
 
     }
 }
+*/

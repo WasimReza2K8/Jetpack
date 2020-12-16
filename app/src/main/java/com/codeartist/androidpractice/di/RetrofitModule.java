@@ -1,3 +1,4 @@
+/*
 package com.codeartist.androidpractice.di;
 
 import com.codeartist.androidpractice.network.RequestApi;
@@ -33,3 +34,4 @@ public class RetrofitModule {
                 .create(RequestApi.class);
     }
 }
+*/
