@@ -45,7 +45,7 @@ class MainActivity : AppCompatActivity() {
         }
         listView.setHasFixedSize(true)
         listView.layoutManager = LinearLayoutManager(this)
-        val adapter = PropertyAdapter(ArrayList())
+        val adapter = PropertyAdapter()
         listView.adapter = adapter
         mViewModel.properties.observe(this, { properties: List<Property> ->
             // Log.i("Observer item size",String.valueOf(mViewModel.properties.getValue().size()));
@@ -64,14 +64,13 @@ class MainActivity : AppCompatActivity() {
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         when (item.itemId) {
             R.id.sort -> {
-
-                // do your sign-out stuff
                 mViewModel.sort()
             }
             R.id.sortByType -> {
-
-                // do your sign-out stuff
                 mViewModel.sortByType()
+            }
+            R.id.normal -> {
+                mViewModel.defaultProperty()
             }
         }
         return true

@@ -3,11 +3,15 @@ package com.codeartist.androidpractice.adapters
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.recyclerview.widget.DiffUtil
+import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.codeartist.androidpractice.databinding.ItemPropertyBinding
 import com.codeartist.androidpractice.model.Property
 
-class PropertyAdapter(private var properties: List<Property>) : RecyclerView.Adapter<PropertyAdapter.ViewHolder>() {
+class PropertyAdapter() : ListAdapter<Property, PropertyAdapter.ViewHolder>(ListAdapterCallBack()) {
+
+    private var properties: List<Property> = ArrayList()
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         val binding = ItemPropertyBinding.inflate(LayoutInflater.from(parent.context), parent, false)
         return ViewHolder(binding)
@@ -43,5 +47,15 @@ class PropertyAdapter(private var properties: List<Property>) : RecyclerView.Ada
             binding!!.property = item
             binding!!.executePendingBindings()
         }
+    }
+}
+
+class ListAdapterCallBack : DiffUtil.ItemCallback<Property>() {
+    override fun areItemsTheSame(oldItem: Property, newItem: Property): Boolean {
+        return oldItem.id == newItem.id
+    }
+
+    override fun areContentsTheSame(oldItem: Property, newItem: Property): Boolean {
+        return oldItem.equals(newItem)
     }
 }

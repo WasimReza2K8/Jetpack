@@ -23,6 +23,9 @@ class PropertyViewModel(private val repository: PropertyRepository) : ViewModel(
     fun sortByType() {
         repository.sortByType()
     }
+    fun defaultProperty() {
+        repository.dbProperty()
+    }
 
 
 }

@@ -4,7 +4,10 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     tools:context=".activity.MainActivity">
-
+    <item
+        android:id="@+id/normal"
+        android:title="Default"
+        app:showAsAction="never"/>
     <item
         android:id="@+id/sort"
         android:title="Sort by price"
