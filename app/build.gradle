@@ -41,7 +41,6 @@ dependencies {
     def rxandroid_version = '2.1.1'
     def roomVersion = '2.2.5'
     def multidex_version = '2.0.1'
-    def version_moshi = '1.11.0'
 
 
     // ViewModel
@@ -59,10 +58,7 @@ dependencies {
     // Retrofit
     implementation "com.squareup.retrofit2:retrofit:$retrofitVersion"
     implementation "com.squareup.retrofit2:converter-gson:$retrofitVersion"
-    implementation "com.squareup.retrofit2:converter-scalars:$retrofitVersion"
-    implementation "com.squareup.retrofit2:converter-moshi:$retrofitVersion"
-    //moshi
-    implementation "com.squareup.moshi:moshi-kotlin:$version_moshi"
+
     //room components
     implementation "androidx.room:room-runtime:$roomVersion"
     annotationProcessor "androidx.room:room-compiler:$roomVersion"

@@ -38,6 +38,7 @@ class PropertyRepository(val dao: PropertyDao) {
     fun sortByPrice() {
         var pro = finalProperties.value
         pro = pro?.sortedBy { it.price }
+
         //println("After sorting"+pro)
         finalProperties.setValue(pro)
         // finalProperties.value = pro
@@ -53,7 +54,7 @@ class PropertyRepository(val dao: PropertyDao) {
 
     fun dbProperty() {
         val pro = dbProperties.value
-        println("After sorting"+ pro)
+        //println("After sorting"+ pro)
         finalProperties.setValue(pro)
     }
 }
