@@ -36,25 +36,16 @@ class PropertyRepository(val dao: PropertyDao) {
 
 
     fun sortByPrice() {
-        var pro = finalProperties.value
-        pro = pro?.sortedBy { it.price }
-
-        //println("After sorting"+pro)
-        finalProperties.setValue(pro)
-        // finalProperties.value = pro
+        //val pro = finalProperties.value
+        finalProperties.setValue(finalProperties.value?.sortedBy { it.price })
     }
 
     fun sortByType() {
-        var pro = finalProperties.value
-        pro = pro?.sortedBy { it.type }
-        //println("After sorting"+ pro)
-        finalProperties.setValue(pro)
-        // finalProperties.value = pro
+       // val pro = finalProperties.value
+        finalProperties.setValue(finalProperties.value?.sortedBy { it.type })
     }
 
     fun dbProperty() {
-        val pro = dbProperties.value
-        //println("After sorting"+ pro)
-        finalProperties.setValue(pro)
+        finalProperties.setValue(dbProperties.value)
     }
 }

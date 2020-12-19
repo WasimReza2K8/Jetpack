@@ -6,7 +6,7 @@
     <androidx.cardview.widget.CardView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_margin="5dp"
+        android:layout_margin="3dp"
         android:orientation="vertical">
 
         <RelativeLayout
@@ -19,35 +19,36 @@
                 imageUrl="@{property.imgSrc}"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_alignParentLeft="true"
                 android:layout_margin="10dp"
                 tools:srcCompat="@tools:sample/avatars" />
 
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
+            <TextView
+                android:id="@+id/id"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/default_margin"
+                android:layout_marginLeft="@dimen/default_margin"
+                android:layout_marginTop="@dimen/top_margin"
+                android:layout_marginEnd="@dimen/default_margin"
+                android:layout_marginRight="@dimen/default_margin"
+                android:layout_marginBottom="@dimen/default_margin"
                 android:layout_toRightOf="@+id/imageView"
-                android:layout_margin="10dp"
-                android:layout_centerVertical="true"
-                android:orientation="vertical">
+                android:fontFamily="@font/roboto_bold"
+                android:text="@{@string/id + property.id}" />
 
-                <TextView
-                    android:id="@+id/id"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="@{@string/id + property.id}" />
+            <TextView
+                android:id="@+id/price"
+                android:layout_below="@+id/id"
+                android:text="@{@string/price + String.valueOf(property.price)}"
+                style="@style/item_text_style" />
 
-                <TextView
-                    android:id="@+id/price"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="@{@string/price + String.valueOf(property.price)}" />
+            <TextView
+                android:id="@+id/type"
+                style="@style/item_text_style"
+                android:layout_below="@+id/price"
+                android:text="@{@string/type + property.type}" />
 
-                <TextView
-                    android:id="@+id/type"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="@{@string/type + property.type}" />
-            </LinearLayout>
         </RelativeLayout>
 
     </androidx.cardview.widget.CardView>
