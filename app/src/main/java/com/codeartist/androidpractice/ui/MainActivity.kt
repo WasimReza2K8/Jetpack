@@ -1,32 +1,31 @@
 package com.codeartist.androidpractice.ui
 
+import android.app.SearchManager
+import android.content.Context
+import android.content.Intent
 import android.os.Bundle
 import android.util.Log
 import android.view.Menu
 import android.view.MenuItem
 import android.view.View
 import android.widget.ProgressBar
+import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
-import androidx.lifecycle.ViewModelProvider
+import androidx.appcompat.widget.SearchView
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import com.codeartist.androidpractice.PropertyApplication
 import com.codeartist.androidpractice.R
 import com.codeartist.androidpractice.adapters.PropertyAdapter
 import com.codeartist.androidpractice.model.Property
 import com.codeartist.androidpractice.viewmodel.PropertyViewModel
-import com.codeartist.androidpractice.viewmodel.PropertyViewModelFactory
 import com.google.android.material.floatingactionbutton.FloatingActionButton
-import java.util.*
+import dagger.hilt.android.AndroidEntryPoint
 
+@AndroidEntryPoint
 class MainActivity : AppCompatActivity() {
 
-    private val mViewModel by lazy {
-        ViewModelProvider(this, PropertyViewModelFactory((application as PropertyApplication)
-                .repository)).get(PropertyViewModel::class.java)
-        // PropertyViewModelFactory((application as PropertyApplication).repository).get(MyViewModel::class.java)
+    private val mViewModel:PropertyViewModel by viewModels()
 
-    }
 
     //private lateinit var mViewModel: PropertyViewModel
     private lateinit var mProgressBar: ProgressBar
@@ -53,11 +52,23 @@ class MainActivity : AppCompatActivity() {
             adapter.addProperties(properties)
         })
 
-        //Log.i("item size",String.valueOf(mViewModel.properties.getValue().size()));
+        if (Intent.ACTION_SEARCH == intent.action) {
+            intent.getStringExtra(SearchManager.QUERY)?.also { query ->
+                mViewModel.doSearch(query)
+            }
+        }
     }
 
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
         menuInflater.inflate(R.menu.menu, menu)
+        // Get the SearchView and set the searchable configuration
+        val searchManager = getSystemService(Context.SEARCH_SERVICE) as SearchManager
+        (menu.findItem(R.id.menu_search).actionView as SearchView).apply {
+            // Assumes current activity is the searchable activity
+            setSearchableInfo(searchManager.getSearchableInfo(componentName))
+            setIconifiedByDefault(true) // Do not iconify the widget; expand it by default
+        }
+
         return true
     }
 

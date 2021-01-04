@@ -16,4 +16,10 @@
         android:id="@+id/sortByType"
         android:title="Sort by type"
         app:showAsAction="never"/>
+    <item
+        android:id="@+id/menu_search"
+        app:actionViewClass="androidx.appcompat.widget.SearchView"
+        android:title="Search"
+        app:showAsAction="always"/>
+
 </menu>

@@ -10,7 +10,7 @@ import com.codeartist.androidpractice.model.Property
 abstract class PropertyRoomDatabase : RoomDatabase() {
     abstract fun propertyDao(): PropertyDao
 
-    companion object {
+   /* companion object {
         @Volatile
         private var INSTANCE: PropertyRoomDatabase? = null
         fun getDatabase(context: Context): PropertyRoomDatabase {
@@ -26,5 +26,5 @@ abstract class PropertyRoomDatabase : RoomDatabase() {
                 instance
             }
         }
-    }
+    }*/
 }

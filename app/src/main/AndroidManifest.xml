@@ -1,8 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.codeartist.androidpractice">
-    <uses-permission android:name="android.permission.INTERNET" />
-    <uses-permission android:name="com.sec.android.provider.badge.permission.WRITE"/>
 
     <application
         android:name=".PropertyApplication"
@@ -12,13 +10,32 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.AndroidPractice">
-        <activity android:name=".ui.MainActivity">
+        <activity android:name=".ui.MainActivity"
+            android:label="Mars Property">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
-
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
+            <meta-data android:name="android.app.default_searchable"
+                android:value=".ui.SearchResultActivity" />
         </activity>
+
+        <activity android:name=".ui.SearchResultActivity"
+            android:label="Search Result">
+            <intent-filter>
+                <action android:name="android.intent.action.SEARCH" />
+            </intent-filter>
+            <meta-data android:name="android.app.searchable"
+                android:resource="@xml/searchable"/>
+        </activity>
+
+        <meta-data
+            android:name="com.google.android.actions"
+            android:resource="@xml/searchable" />
     </application>
+
+    <uses-permission android:name="com.sec.android.provider.badge.permission.WRITE" />
+
+    <uses-permission android:name="android.permission.INTERNET" />
 
 </manifest>

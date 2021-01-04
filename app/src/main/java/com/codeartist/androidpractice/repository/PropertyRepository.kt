@@ -5,11 +5,12 @@ import androidx.lifecycle.MediatorLiveData
 import com.codeartist.androidpractice.db.PropertyDao
 import com.codeartist.androidpractice.model.Property
 import com.codeartist.androidpractice.network.MarsApi
+import com.codeartist.androidpractice.network.RequestApi
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 import kotlinx.coroutines.withTimeout
 
-class PropertyRepository(val dao: PropertyDao) {
+class PropertyRepository(private val dao: PropertyDao, private val retrofitService: RequestApi) {
     val dbProperties: LiveData<List<Property>> = dao.property
     val finalProperties = MediatorLiveData<List<Property>>()
 
@@ -19,18 +20,18 @@ class PropertyRepository(val dao: PropertyDao) {
 
 
     suspend fun collectProperties() {
-        withContext(Dispatchers.IO) {
-            try {
-                val result = withTimeout(3_000) {
-                    MarsApi.retrofitService
-                            .getProperties()
-                }
-                dao.deleteAll()
-                dao.insert(result)
-            } catch (error: Throwable) {
-                throw error
+        //withContext(Dispatchers.IO) {
+        try {
+            val result = withTimeout(3_000) {
+                retrofitService.getProperties()
             }
+            dao.deleteAll()
+            dao.insert(result)
+           // println("current thread" + Thread.currentThread())
+        } catch (error: Throwable) {
+            throw error
         }
+        //  }
 
     }
 
@@ -41,7 +42,7 @@ class PropertyRepository(val dao: PropertyDao) {
     }
 
     fun sortByType() {
-       // val pro = finalProperties.value
+        // val pro = finalProperties.value
         finalProperties.setValue(finalProperties.value?.sortedBy { it.type })
     }
 
